@@ -67,12 +67,12 @@ jobs:
 
   android-test:
     runs-on: macos-latest # enables hardware acceleration in the virtual machine
-    timeout-minutes: 30
+    timeout-minutes: 60
     strategy:
       fail-fast: false
       matrix:
         device:
-          - roundApi28
+          - roundApi30
 
     steps:
       - name: Checkout
@@ -86,6 +86,12 @@ jobs:
         with:
           distribution: 'zulu'
           java-version: '17'
+
+      - name: Clean Managed Devices
+        uses: gradle/gradle-build-action@v2
+        with:
+          arguments: cleanManagedDevices
+          build-root-directory: ${{ env.SAMPLE_PATH }}
 
       - name: Run instrumentation tests
         uses: gradle/gradle-build-action@v2
